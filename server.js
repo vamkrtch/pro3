@@ -1,9 +1,36 @@
+var express = require("express");
+var app = express();
+var server = require("http").createServer(app);
+var io = require("socket.io")(server);
+var fs = require("fs");
+const { start } = require("repl");
+
 const Grass = require("./Grass");
 const GrassEater = require("./GrassEater");
 const Animal = require("./Animal");
 const Hunter = require("./Hunter");
 
-var socket = io();
+app.use(express.static("."));
+
+app.get("/", function (req, res) {
+  res.redirect("index.html");
+});
+server.listen(3000);
+
+const Grass = require("./Grass");
+const GrassEater = require("./GrassEater");
+
+// var matrix = [
+//     [0, 0, 1, 0, 3],
+//     [1, 4, 0, 0, 0],
+//     [0, 2, 5, 2, 2],
+//     [0, 3, 1, 0, 3],
+//     [1, 1, 0, 4, 0],
+//     [1, 1, 0, 0, 0],
+//     [1, 1, 5, 3, 0]
+// ];
+
+io.sockets.emit("send matrix", matrix);
 var matrix = [];
 var n = 50;
 var m = 50;
@@ -27,7 +54,29 @@ function setup() {
   createCanvas(matrix[0].length * side, matrix.length * side);
   background("#acacac");
 
-
+  function createObject(matrix) {
+    for (var y = 0; y < matrix.length; y++) {
+      for (var x = 0; x < matrix[y].length; x++) {
+        if (matrix[y][x] == 1) {
+          var gr = new Grass(x, y, 1);
+          grassArr.push(gr);
+        } else if (matrix[y][x] == 2) {
+          var grEat = new GrassEater(x, y, 2);
+          grassEatArr.push(grEat);
+        } else if (matrix[y][x] == 3) {
+          var An = new Animal(x, y, 3);
+          AnimalArr.push(An);
+        } else if (matrix[y][x] == 4) {
+          var huntArr = new Hunter(x, y, 4);
+          hunterArr.push(huntArr);
+        } else if (matrix[y][x] == 5) {
+          var ForestArr = new Forestman(x, y, 5);
+          ForestmanArr.push(ForestArr);
+        }
+      }
+    }
+  }
+}
 function draw() {
   for (var y = 0; y < matrix.length; y++) {
     for (var x = 0; x < matrix[y].length; x++) {
@@ -81,8 +130,3 @@ function draw() {
     ForestmanArr[i].die();
   }
 }
-
-
-setInterval(function () {
-  socket.on("send matrix", nkarel);
- 1000)
