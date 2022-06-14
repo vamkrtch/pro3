@@ -1,34 +1,28 @@
-const Grass = require("./Grass");
-const GrassEater = require("./GrassEater");
-const Animal = require("./Animal");
-const Hunter = require("./Hunter");
+
 
 var socket = io();
-var matrix = [];
-var n = 50;
-var m = 50;
+
+// var matrix = [];
+// var n = 50;
+// var m = 50;
 
 var side = 10;
+// io.sockets.on("the data",fn);
 
-var grassArr = [];
-var grassEatArr = [];
-var AnimalArr = [];
-var hunterArr = [];
-var ForestmanArr = [];
+function fn(data){
+    matrix = data.matrix;
+    return(matrix);
+}
+
 
 function setup() {
-  for (var y = 0; y < n; y++) {
-    matrix[y] = [];
-    for (var x = 0; x < m; x++) {
-      matrix[y][x] = Math.round(random(0, 5));
-    }
-  }
-  frameRate(5);
-  createCanvas(matrix[0].length * side, matrix.length * side);
+
+  // frameRate(5);
+  createCanvas(55 * side,55 * side);
   background("#acacac");
+}
 
-
-function draw() {
+function nkarel(matrix) {
   for (var y = 0; y < matrix.length; y++) {
     for (var x = 0; x < matrix[y].length; x++) {
       if (matrix[y][x] == 1) {
@@ -52,37 +46,9 @@ function draw() {
       }
     }
   }
-
-  for (var i in grassArr) {
-    grassArr[i].mul();
-  }
-  for (var i in grassEatArr) {
-    grassEatArr[i].move();
-    grassEatArr[i].eat();
-    grassEatArr[i].mul();
-    grassEatArr[i].die();
-  }
-  for (var i in AnimalArr) {
-    AnimalArr[i].move();
-    AnimalArr[i].eat();
-    AnimalArr[i].mul();
-    AnimalArr[i].die();
-  }
-  for (var i in hunterArr) {
-    hunterArr[i].move();
-    hunterArr[i].eat();
-    hunterArr[i].mul();
-    hunterArr[i].die();
-  }
-  for (var i in ForestmanArr) {
-    ForestmanArr[i].move();
-    ForestmanArr[i].eat();
-    ForestmanArr[i].mul();
-    ForestmanArr[i].die();
-  }
 }
-
+  
 
 setInterval(function () {
   socket.on("send matrix", nkarel);
- 1000)
+ 1000})

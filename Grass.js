@@ -1,8 +1,3 @@
-const Grass = require("./Grass");
-const GrassEater = require("./GrassEater");
-const Animal = require("./Animal");
-const Hunter = require("./Hunter");
-
 module.exports = class Grass {
   constructor(x, y, index) {
     this.x = x;
@@ -36,7 +31,7 @@ module.exports = class Grass {
 
   mul() {
     this.multiply++;
-    var newCell = random(this.chooseCell(0));
+    var newCell = Math.random(this.chooseCell(0));
     // console.log(newCell, this.multiply);
     if (this.multiply >= 7 && newCell) {
       var newGrass = new Grass(newCell[0], newCell[1], this.index);

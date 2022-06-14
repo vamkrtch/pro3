@@ -1,15 +1,12 @@
-const Grass = require("./Grass");
+
 const GrassEater = require("./GrassEater");
-const Animal = require("./Animal");
-const Hunter = require("./Hunter");
+
 
 module.exports = class Animal extends GrassEater {
   constructor(x, y, index) {
     super(x, y, index);
-    this.x = x;
-    this.y = y;
     this.energy = 8;
-    this.index = index;
+  
   }
   getNewCoordinates() {
     this.directions = [
@@ -45,11 +42,12 @@ module.exports = class Animal extends GrassEater {
     return super.chooseCell(character);
   }
   move() {
-    var newCell = random(this.chooseCell(0));
+    var newCell = Math.random(this.chooseCell(0));
 
     if (newCell) {
       this.energy--;
 
+    
       var x = newCell[0];
       var y = newCell[1];
       matrix[this.y][this.x] = 0;
@@ -61,7 +59,7 @@ module.exports = class Animal extends GrassEater {
   }
 
   eat() {
-    var grassEatCells = random(this.chooseCell(2));
+    var grassEatCells = Math.random(this.chooseCell(2));
     if (grassEatCells) {
       var x = grassEatCells[0];
       var y = grassEatCells[1];
@@ -84,7 +82,7 @@ module.exports = class Animal extends GrassEater {
 
   mul() {
     // this.multiply++;
-    var newCell = random(this.chooseCell(0));
+    var newCell = Math.random(this.chooseCell(0));
     if (this.energy >= 12 && newCell) {
       var x = newCell[0];
       var y = newCell[1];

@@ -1,9 +1,8 @@
-const Grass = require("./Grass");
-const GrassEater = require("./GrassEater");
-const Animal = require("./Animal");
-const Hunter = require("./Hunter");
 
-class Forestman extends GrassEater {
+const GrassEater = require("./GrassEater");
+
+
+module.exports = class Forestman extends GrassEater {
   constructor(x, y, index) {
     super(x, y, index);
     this.x = x;
@@ -34,7 +33,7 @@ class Forestman extends GrassEater {
   }
 
   move() {
-    var newCell = random(this.chooseCell(0));
+    var newCell = Math.random(this.chooseCell(0));
     if (newCell) {
       console.log(newCell);
       var x = newCell[0];
@@ -49,11 +48,11 @@ class Forestman extends GrassEater {
   }
 
   eat() {
-    var HunterCells = random(this.chooseCell(4));
+    var HunterCells = Math.random(this.chooseCell(4));
 
-    var grassEatCells = random(this.chooseCell(3));
+    var grassEatCells = Math.random(this.chooseCell(3));
     var AllCells = HunterCells + grassEatCells;
-    var rand = random(AllCells);
+    var rand = Math.random(AllCells);
     if (rand) {
       var x = rand[0];
       var y = rand[1];
@@ -84,7 +83,7 @@ class Forestman extends GrassEater {
 
   mul() {
     // this.multiply++;
-    var newCell = random(this.chooseCell(0));
+    var newCell = Math.random(this.chooseCell(0));
     if (this.energy >= 14 && newCell) {
       var x = newCell[0];
       var y = newCell[1];

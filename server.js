@@ -5,20 +5,26 @@ var io = require("socket.io")(server);
 var fs = require("fs");
 const { start } = require("repl");
 
-const Grass = require("./Grass");
-const GrassEater = require("./GrassEater");
-const Animal = require("./Animal");
-const Hunter = require("./Hunter");
+Grass = require("./Grass");
+GrassEater = require("./GrassEater");
+Animal = require("./Animal");
+Hunter = require("./Hunter");
 
 app.use(express.static("."));
 
 app.get("/", function (req, res) {
   res.redirect("index.html");
 });
-server.listen(3000);
+server.listen(4001);
 
-const Grass = require("./Grass");
-const GrassEater = require("./GrassEater");
+
+grassArr = [];
+grassEatArr = [];
+AnimalArr = [];
+hunterArr = [];
+ForestmanArr = [];
+Grass = require("./Grass");
+GrassEater = require("./GrassEater");
 
 // var matrix = [
 //     [0, 0, 1, 0, 3],
@@ -30,78 +36,53 @@ const GrassEater = require("./GrassEater");
 //     [1, 1, 5, 3, 0]
 // ];
 
-io.sockets.emit("send matrix", matrix);
-var matrix = [];
+
 var n = 50;
 var m = 50;
-
-var side = 10;
-
-var grassArr = [];
-var grassEatArr = [];
-var AnimalArr = [];
-var hunterArr = [];
-var ForestmanArr = [];
-
-function setup() {
+function gen() {
+  var matrix = [];
   for (var y = 0; y < n; y++) {
     matrix[y] = [];
     for (var x = 0; x < m; x++) {
-      matrix[y][x] = Math.round(random(0, 5));
+      matrix[y][x] = Math.round(0, 5);
     }
   }
-  frameRate(5);
-  createCanvas(matrix[0].length * side, matrix.length * side);
-  background("#acacac");
+return matrix
+}
+matrix = gen();
+io.sockets.emit("send matrix", matrix);
 
-  function createObject(matrix) {
-    for (var y = 0; y < matrix.length; y++) {
-      for (var x = 0; x < matrix[y].length; x++) {
-        if (matrix[y][x] == 1) {
-          var gr = new Grass(x, y, 1);
-          grassArr.push(gr);
-        } else if (matrix[y][x] == 2) {
-          var grEat = new GrassEater(x, y, 2);
-          grassEatArr.push(grEat);
-        } else if (matrix[y][x] == 3) {
-          var An = new Animal(x, y, 3);
-          AnimalArr.push(An);
-        } else if (matrix[y][x] == 4) {
-          var huntArr = new Hunter(x, y, 4);
-          hunterArr.push(huntArr);
-        } else if (matrix[y][x] == 5) {
-          var ForestArr = new Forestman(x, y, 5);
-          ForestmanArr.push(ForestArr);
-        }
+
+
+function createObject(matrix) {
+  for (var y = 0; y < matrix.length; y++) {
+    for (var x = 0; x < matrix[y].length; x++) {
+      if (matrix[y][x] == 1) {
+        var gr = new Grass(x, y, 1);
+        grassArr.push(gr);
+      } else if (matrix[y][x] == 2) {
+        var grEat = new GrassEater(x, y, 2);
+        grassEatArr.push(grEat);
+      } else if (matrix[y][x] == 3) {
+        var An = new Animal(x, y, 3);
+        AnimalArr.push(An);
+      } else if (matrix[y][x] == 4) {
+        var huntArr = new Hunter(x, y, 4);
+        hunterArr.push(huntArr);
+      } else if (matrix[y][x] == 5) {
+        var ForestArr = new Forestman(x, y, 5);
+        ForestmanArr.push(ForestArr);
       }
     }
   }
 }
-function draw() {
-  for (var y = 0; y < matrix.length; y++) {
-    for (var x = 0; x < matrix[y].length; x++) {
-      if (matrix[y][x] == 1) {
-        fill("green");
-        rect(x * side, y * side, side, side);
-      } else if (matrix[y][x] == 0) {
-        fill("#acacac");
-        rect(x * side, y * side, side, side);
-      } else if (matrix[y][x] == 2) {
-        fill("yellow");
-        rect(x * side, y * side, side, side);
-      } else if (matrix[y][x] == 3) {
-        fill("red");
-        rect(x * side, y * side, side, side);
-      } else if (matrix[y][x] == 4) {
-        fill("blue");
-        rect(x * side, y * side, side, side);
-      } else if (matrix[y][x] == 5) {
-        fill("black");
-        rect(x * side, y * side, side, side);
-      }
-    }
-  }
 
+data = {
+  matrix:matrix,
+  
+}
+
+function game() {
   for (var i in grassArr) {
     grassArr[i].mul();
   }
@@ -130,3 +111,8 @@ function draw() {
     ForestmanArr[i].die();
   }
 }
+
+io.on('connection', function (socket) {
+  createObject(matrix)
+  socket.emit("the data", data)
+})
