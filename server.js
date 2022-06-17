@@ -13,10 +13,9 @@ Hunter = require("./Hunter");
 app.use(express.static("."));
 
 app.get("/", function (req, res) {
-  res.redirect("index.html");
+  res.sendFile(__dirname + "/index.html");
 });
 server.listen(4001);
-
 
 grassArr = [];
 grassEatArr = [];
@@ -36,7 +35,6 @@ GrassEater = require("./GrassEater");
 //     [1, 1, 5, 3, 0]
 // ];
 
-
 var n = 50;
 var m = 50;
 function gen() {
@@ -44,17 +42,20 @@ function gen() {
   for (var y = 0; y < n; y++) {
     matrix[y] = [];
     for (var x = 0; x < m; x++) {
-      matrix[y][x] = Math.round(0, 5);
+      matrix[y][x] = Math.floor(Math.random() * 5);
     }
   }
-return matrix
+  return matrix;
 }
 matrix = gen();
-io.sockets.emit("send matrix", matrix);
 
+data = {
+  matrix: matrix,
+};
 
+function createObject() {
+  const { matrix } = data;
 
-function createObject(matrix) {
   for (var y = 0; y < matrix.length; y++) {
     for (var x = 0; x < matrix[y].length; x++) {
       if (matrix[y][x] == 1) {
@@ -75,11 +76,6 @@ function createObject(matrix) {
       }
     }
   }
-}
-
-data = {
-  matrix:matrix,
-  
 }
 
 function game() {
@@ -112,7 +108,6 @@ function game() {
   }
 }
 
-io.on('connection', function (socket) {
-  createObject(matrix)
-  socket.emit("the data", data)
-})
+setInterval(() => {
+  io.sockets.emit("send matrix", data);
+}, 1000);
