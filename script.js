@@ -44,8 +44,8 @@ function nkarel(matrix) {
   }
 }
 
-// socket.on("send matrix", nkarel);
-socket.on("send matrix", (data) => {
-  console.log("Send Matrix: ", data);
-  nkarel(data.matrix);
-});
+socket.on("send matrix", nkarel);
+// socket.on("send matrix", (data) => {
+//   console.log("Send Matrix: ", data);
+//   nkarel(data.matrix);
+// });

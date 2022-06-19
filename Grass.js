@@ -31,7 +31,8 @@ module.exports = class Grass {
 
   mul() {
     this.multiply++;
-    var newCell = Math.random(this.chooseCell(0));
+    var newCell1 = this.chooseCell(0);
+    var newCell = newCell1[Math.floor(Math.random() * newCell1.length)];
     // console.log(newCell, this.multiply);
     if (this.multiply >= 7 && newCell) {
       var newGrass = new Grass(newCell[0], newCell[1], this.index);

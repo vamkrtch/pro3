@@ -41,8 +41,13 @@ module.exports = class Animal extends GrassEater {
     this.getNewCoordinates();
     return super.chooseCell(character);
   }
+
+
+  // var newCell1 = this.chooseCell(0);
+  // var newCell = newCell1[Math.floor(Math.random()*newCell1.length)];
   move() {
-    var newCell = Math.random(this.chooseCell(0));
+    var newCell1 = this.chooseCell(0);
+    var newCell = newCell1[Math.floor(Math.random()*newCell1.length)];
 
     if (newCell) {
       this.energy--;
@@ -59,7 +64,8 @@ module.exports = class Animal extends GrassEater {
   }
 
   eat() {
-    var grassEatCells = Math.random(this.chooseCell(2));
+    var grassEatCells1 = this.chooseCell(0);
+    var grassEatCells= grassEatCells1[Math.floor(Math.random()*grassEatCells1.length)];
     if (grassEatCells) {
       var x = grassEatCells[0];
       var y = grassEatCells[1];
@@ -82,7 +88,8 @@ module.exports = class Animal extends GrassEater {
 
   mul() {
     // this.multiply++;
-    var newCell = Math.random(this.chooseCell(0));
+    var newCell1 = this.chooseCell(0);
+   var  newCell = newCell1[Math.floor(Math.random()*newCell1.length)];
     if (this.energy >= 12 && newCell) {
       var x = newCell[0];
       var y = newCell[1];

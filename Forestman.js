@@ -32,8 +32,14 @@ module.exports = class Forestman extends GrassEater {
     return super.chooseCell(character);
   }
 
+
+
+
+  // var newCell1 = this.chooseCell(0);
+  // var newCell = newCell1[Math.floor(Math.random()*newCell1.length)];
   move() {
-    var newCell = Math.random(this.chooseCell(0));
+    var newCell1 =this.chooseCell(0);
+    var newCell = newCell1[Math.floor(Math.random()*newCell1.length)]
     if (newCell) {
       console.log(newCell);
       var x = newCell[0];
@@ -48,14 +54,21 @@ module.exports = class Forestman extends GrassEater {
   }
 
   eat() {
-    var HunterCells = Math.random(this.chooseCell(4));
+    var rand1HunterCells1 = this.chooseCell(4);
+    var HunterCells = rand1HunterCells1[Math.floor(Math.random()*rand1HunterCells1.length)];
 
-    var grassEatCells = Math.random(this.chooseCell(3));
-    var AllCells = HunterCells + grassEatCells;
-    var rand = Math.random(AllCells);
-    if (rand) {
-      var x = rand[0];
-      var y = rand[1];
+    var grassEatCells1 = this.chooseCell(3);
+
+
+    var grassEatCells= grassEatCells1[Math.floor(Math.random()*grassEatCells1.length)];
+
+    // var AllCells = HunterCells + grassEatCells;
+    // var rand1 = AllCells;
+
+    // var rand= rand1[Math.floor(Math.random()*rand1.length)];
+    if (HunterCells) {
+      var x = HunterCells[0];
+      var y = HunterCells[1];
 
       matrix[this.y][this.x] = 0;
       matrix[y][x] = this.index;
@@ -67,10 +80,10 @@ module.exports = class Forestman extends GrassEater {
             break;
           }
         }
-      } else {
+      } else if (grassEatCells){
         for (var i in grassEatArr) {
           if (x == grassEatArr[i].x && y == grassEatArr[i].y) {
-            grassatArr.splice(i, 1);
+            grassEatArr.splice(i, 1);
             break;
           }
         }
@@ -83,7 +96,8 @@ module.exports = class Forestman extends GrassEater {
 
   mul() {
     // this.multiply++;
-    var newCell = Math.random(this.chooseCell(0));
+    var newCell1 = this.chooseCell(0);
+    var newCell = newCell1[Math.floor(Math.random()*newCell1.length)]
     if (this.energy >= 14 && newCell) {
       var x = newCell[0];
       var y = newCell[1];

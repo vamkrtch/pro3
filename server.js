@@ -9,7 +9,7 @@ Grass = require("./Grass");
 GrassEater = require("./GrassEater");
 Animal = require("./Animal");
 Hunter = require("./Hunter");
-
+Forestman= require("./Forestman")
 app.use(express.static("."));
 
 app.get("/", function (req, res) {
@@ -42,19 +42,21 @@ function gen() {
   for (var y = 0; y < n; y++) {
     matrix[y] = [];
     for (var x = 0; x < m; x++) {
-      matrix[y][x] = Math.floor(Math.random() * 5);
+      matrix[y][x] = Math.floor(Math.random() * 6);
     }
   }
   return matrix;
 }
+
 matrix = gen();
+console.log(matrix);
 
 data = {
   matrix: matrix,
 };
 
-function createObject() {
-  const { matrix } = data;
+function createObject(matrix) {
+  // const { matrix } = data;
 
   for (var y = 0; y < matrix.length; y++) {
     for (var x = 0; x < matrix[y].length; x++) {
@@ -106,8 +108,17 @@ function game() {
     ForestmanArr[i].mul();
     ForestmanArr[i].die();
   }
+  io.sockets.emit("send matrix",matrix)
 }
+
+setInterval(game,1000)
 
 setInterval(() => {
   io.sockets.emit("send matrix", data);
+
 }, 1000);
+
+
+io.on('connection',function(socket){
+  createObject(matrix)
+})

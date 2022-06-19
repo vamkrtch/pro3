@@ -40,16 +40,49 @@ module.exports = class Hunter {
     return found;
   }
 
+
+
+
+  // var newCell1 = this.chooseCell(0);
+  // var newCell = newCell1[Math.floor(Math.random()*newCell1.length)];
+
+
+
+
+
   move() {
-    var AllnewCell = [];
-    var newCell = Math.random(this.chooseCell(1));
-    var newCell2 = Math.random(this.chooseCell(0));
-    AllnewCell.push(newCell);
-    AllnewCell.push(newCell2);
-    var randcell = Math.random(AllnewCell);
-    if (randcell) {
-      var x = randcell[0];
-      var y = randcell[1];
+    var meker = this.chooseCell(1)
+    var gtacmeker = meker[Math.floor(Math.random() * meker.length)]
+var zroner = this.chooseCell(2)
+var gtaczroner = zroner[Math.floor(Math.random() * zroner.length)]
+    // var AllnewCell = [];
+    // var newCell1 = this.chooseCell(1);
+    // var newCell = newCell1[Math.floor(Math.random()*newCell1.length)];
+    // var newCell2 = this.chooseCell(0);
+    // var newCell = newCell2[Math.floor(Math.random()*newCell2.length)];
+    // AllnewCell.push(newCell);
+    // AllnewCell.push(newCell2);
+
+
+    // var randcell1 = AllnewCell;
+
+
+    // var randcell = randcell1[Math.floor(Math.random()*randcell1.length)];
+    if (gtacmeker) {
+      var x = gtacmeker[0];
+      var y = gtacmeker[1];
+
+      matrix[this.y][this.x] = 0;
+
+      matrix[y][x] = this.index;
+
+      this.x = x;
+      this.y = y;
+
+      this.energy--;
+    }else if(gtaczroner){
+      var x = gtaczroner[0];
+      var y = gtaczroner[1];
 
       matrix[this.y][this.x] = 0;
 
@@ -62,7 +95,9 @@ module.exports = class Hunter {
     }
   }
   eat() {
-    var AnimalCells = Math.random(this.chooseCell(3));
+    var AnimalCells1 = this.chooseCell(3);
+    var AnimalCells = AnimalCells1[Math.floor(Math.random()*AnimalCells1.length)];
+
     if (AnimalCells) {
       var x = AnimalCells[0];
       var y = AnimalCells[1];
@@ -85,7 +120,8 @@ module.exports = class Hunter {
 
   mul() {
     this.multiply++;
-    var newCell = Math.random(this.chooseCell(0));
+    var newCell1 = this.chooseCell(0);
+    var newCell = newCell1[Math.floor(Math.random()*newCell1.length)];
     if (this.energy >= 12 && newCell) {
       var x = newCell[0];
       var y = newCell[1];
