@@ -1,11 +1,9 @@
 const Grass = require("./Grass");
 
-
 module.exports = class GrassEater extends Grass {
   constructor(x, y, index) {
     super(x, y, index);
     this.energy = 8;
-    
   }
   getNewCoordinates() {
     this.directions = [
@@ -26,7 +24,7 @@ module.exports = class GrassEater extends Grass {
 
   move() {
     var newCell1 = this.chooseCell(0);
-var newCell = newCell1[Math.floor(Math.random()*newCell1.length)]
+    var newCell = newCell1[Math.floor(Math.random() * newCell1.length)];
     if (newCell) {
       this.energy--;
       var x = newCell[0];
@@ -41,10 +39,11 @@ var newCell = newCell1[Math.floor(Math.random()*newCell1.length)]
 
   eat() {
     var grassCells1 = this.chooseCell(0);
-    var grassCells = grassCells1[Math.floor(Math.random()*grassCells1.length)]
+    var grassCells =
+      grassCells1[Math.floor(Math.random() * grassCells1.length)];
     if (grassCells) {
-      // var x = grassCells[0];
-      // var y = grassCells[1];
+      var x = grassCells[0];
+      var y = grassCells[1];
       matrix[this.y][this.x] = 0;
       matrix[grassCells[1]][grassCells[0]] = this.index;
 
@@ -64,8 +63,8 @@ var newCell = newCell1[Math.floor(Math.random()*newCell1.length)]
 
   mul() {
     this.multiply++;
-    var newCell1  = this.chooseCell(0);
-    var newCell = newCell1[Math.floor(Math.random()*newCell1.length)]
+    var newCell1 = this.chooseCell(0);
+    var newCell = newCell1[Math.floor(Math.random() * newCell1.length)];
     if (this.energy >= 12 && newCell) {
       var x = newCell[0];
       var y = newCell[1];

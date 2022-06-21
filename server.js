@@ -9,7 +9,7 @@ Grass = require("./Grass");
 GrassEater = require("./GrassEater");
 Animal = require("./Animal");
 Hunter = require("./Hunter");
-Forestman= require("./Forestman")
+Forestman = require("./Forestman");
 app.use(express.static("."));
 
 app.get("/", function (req, res) {
@@ -48,12 +48,11 @@ function gen() {
   return matrix;
 }
 matrix = gen();
-io.sockets.emit("send matrix",matrix)
+io.sockets.emit("send matrix", matrix);
 // var weath = "winter";
 
-
 // function weather() {
- 
+
 //   if (weath == "winter") {
 //       weath = "spring"
 //   }
@@ -66,7 +65,7 @@ io.sockets.emit("send matrix",matrix)
 //   else if (weath == "autumn") {
 //       weath = "winter"
 //   }
- 
+
 //   io.sockets.emit('weather', weath)
 // }
 // console.log(weath);
@@ -76,6 +75,45 @@ matrix = gen();
 data = {
   matrix: matrix,
 };
+
+function rmrf() {
+  grassArr = [];
+  grassEatArr = [];
+  AnimalArr = [];
+  hunterArr = [];
+  ForestmanArr = [];
+  for (var y = 0; y < matrix.length; y++) {
+    for (var x = 0; x < matrix[y].length; x++) {
+      matrix[y][x] = 0;
+    }
+  }
+}
+
+function AddGrassEater() {
+  for (var i = 0; i < 7; i++) {
+    var x = Math.floor(Math.random() * matrix[0].length);
+    var y = Math.floor(Math.random() * matrix.length);
+    if (matrix[y][x] == 0) {
+      matrix[y][x] = 2;
+      grassEatArr.push(new GrassEater(x, y, 2));
+    }
+  }
+}
+
+function addgishatich() {
+  for (var i = 0; i < 7; i++) {
+    var x = Math.floor(Math.random() * matrix[0].length);
+    var y = Math.floor(Math.random() * matrix.length);
+    if (matrix[y][x] == 0) {
+      matrix[y][x] = 3;
+      AnimalArr.push(new Animal(x, y, 3));
+    }
+  }
+}
+
+function reload() {
+  setTimeout("location.reload(true);", 1000);
+}
 
 function createObject(matrix) {
   //  t { matrix } = data;
@@ -101,7 +139,7 @@ function createObject(matrix) {
     }
   }
 }
-
+console.log("new", matrix);
 function game() {
   for (var i in grassArr) {
     grassArr[i].mul();
@@ -130,18 +168,28 @@ function game() {
     ForestmanArr[i].mul();
     ForestmanArr[i].die();
   }
-  io.sockets.emit("send matrix",matrix)
+  io.sockets.emit("send matrix", matrix);
 }
 
-setInterval(game,1000)
+setInterval(game, 1000);
 
 setInterval(() => {
   io.sockets.emit("send matrix", data);
-
 }, 1000);
 
-
-io.on('connection',function(socket){
-  createObject(matrix)
+io.on("connection", function (socket) {
+  createObject(matrix);
   // socket.on("weather", weather)
-})
+});
+
+io.on("connection", function (socket) {
+  socket.on("rmrf", rmrf);
+});
+
+io.on("connection", function (socket) {
+  socket.on("AddGrassEater", AddGrassEater);
+});
+
+io.on("connection", function (socket) {
+  socket.on("add Animal", addgishatich);
+});
