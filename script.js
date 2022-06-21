@@ -1,16 +1,19 @@
 var socket = io("ws://localhost:4001");
 
-// var matrix = [];
-// var n = 50;
-// var m = 50;
+// socket.on("weather", function (data) {
+//   weath = data;
+//   console.log(weath);
+
+// })
+
 
 var side = 10;
-// io.sockets.on("the data",fn);
-
 function fn(data) {
   matrix = data.matrix;
   return matrix;
 }
+
+
 
 function setup() {
   // frameRate(5);
@@ -18,7 +21,12 @@ function setup() {
   background("#acacac");
 }
 
+
+
+function startgame(){
+
 function nkarel(matrix) {
+ // alert(matrix.length);
   for (var y = 0; y < matrix.length; y++) {
     for (var x = 0; x < matrix[y].length; x++) {
       if (matrix[y][x] == 0) {
@@ -43,8 +51,40 @@ function nkarel(matrix) {
     }
   }
 }
-
 socket.on("send matrix", nkarel);
+}
+weath = "winter"
+
+// socket.on("weather",weather)
+function weather() {
+  // socket.emit("weather")
+  let body = document.getElementById("body")
+
+    if (weath == "winter") {
+      weath = "spring"
+      body.style.backgroundColor = "green"
+    }
+    else if (weath == "spring") {
+      weath = "summer"
+      body.style.backgroundColor = "yellow"
+    }
+    else if (weath == "summer") {
+      weath = "autumn"
+      body.style.backgroundColor = "orange"
+    }
+    else if (weath == "autumn") {
+      weath = "winter"
+      body.style.backgroundColor = "blue"
+    }
+  }
+
+
+setInterval(weather, 5000)
+// window.onload = startgame
+
+function kill() {
+  socket.emit("kill")
+}
 // socket.on("send matrix", (data) => {
 //   console.log("Send Matrix: ", data);
 //   nkarel(data.matrix);

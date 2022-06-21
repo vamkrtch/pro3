@@ -41,7 +41,7 @@ module.exports = class Forestman extends GrassEater {
     var newCell1 =this.chooseCell(0);
     var newCell = newCell1[Math.floor(Math.random()*newCell1.length)]
     if (newCell) {
-      console.log(newCell);
+      
       var x = newCell[0];
       var y = newCell[1];
 

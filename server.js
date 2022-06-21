@@ -47,16 +47,38 @@ function gen() {
   }
   return matrix;
 }
-
 matrix = gen();
-console.log(matrix);
+io.sockets.emit("send matrix",matrix)
+// var weath = "winter";
+
+
+// function weather() {
+ 
+//   if (weath == "winter") {
+//       weath = "spring"
+//   }
+//   else if (weath == "spring") {
+//       weath = "summer"
+//   }
+//   else if (weath == "summer") {
+//       weath = "autumn"
+//   }
+//   else if (weath == "autumn") {
+//       weath = "winter"
+//   }
+ 
+//   io.sockets.emit('weather', weath)
+// }
+// console.log(weath);
+// setInterval(weather, 5000);
+matrix = gen();
 
 data = {
   matrix: matrix,
 };
 
 function createObject(matrix) {
-  // const { matrix } = data;
+  //  t { matrix } = data;
 
   for (var y = 0; y < matrix.length; y++) {
     for (var x = 0; x < matrix[y].length; x++) {
@@ -121,4 +143,5 @@ setInterval(() => {
 
 io.on('connection',function(socket){
   createObject(matrix)
+  // socket.on("weather", weather)
 })
