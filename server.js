@@ -4,36 +4,39 @@ var server = require("http").createServer(app);
 var io = require("socket.io")(server);
 var fs = require("fs");
 const { start } = require("repl");
+const Forestman = require("./Forestman");
 
 Grass = require("./Grass");
 GrassEater = require("./GrassEater");
 Animal = require("./Animal");
 Hunter = require("./Hunter");
-Forestman = require("./Forestman");
-app.use(express.static("."));
 
+app.use(express.static("."));
+statData = [];
 app.get("/", function (req, res) {
   res.sendFile(__dirname + "/index.html");
 });
+app.get("/st", function (req, res) {
+  res.redirect("st.html");
+});
 server.listen(4001);
-
 grassArr = [];
 grassEatArr = [];
 AnimalArr = [];
 hunterArr = [];
 ForestmanArr = [];
+//////////////////////////////// Statistics Variable ////////////////////////////////
+
+count_grass = 0;
+count_grassEat = 0;
+count_Animal = 0;
+count_hunter = 0;
+count_Forestman = 0;
+
+//////////////////////////////// Statistics Variable ////////////////////////////////
+
 Grass = require("./Grass");
 GrassEater = require("./GrassEater");
-
-// var matrix = [
-//     [0, 0, 1, 0, 3],
-//     [1, 4, 0, 0, 0],
-//     [0, 2, 5, 2, 2],
-//     [0, 3, 1, 0, 3],
-//     [1, 1, 0, 4, 0],
-//     [1, 1, 0, 0, 0],
-//     [1, 1, 5, 3, 0]
-// ];
 
 var n = 50;
 var m = 50;
@@ -138,8 +141,19 @@ function createObject(matrix) {
       }
     }
   }
+  //   io.sockets.emit("send matrix", matrix);
+
+  //   let objectCount = {
+  //     grass: grassArr.length,
+  //     grassEater: grassEatArr.length,
+  //     predator: AnimalArr.length,
+  //     bust: hunterArr.length,
+  //     bomb: ForestmanArr.length,
+  //   };
+
+  //   let data = JSON.stringify(objectCount, null, 2);
+  //   fs.writeFileSync("statistics.json", data);
 }
-console.log("new", matrix);
 function game() {
   for (var i in grassArr) {
     grassArr[i].mul();
@@ -193,3 +207,35 @@ io.on("connection", function (socket) {
 io.on("connection", function (socket) {
   socket.on("add Animal", addgishatich);
 });
+
+var stats = {
+  Grass: count_grass,
+  grassEater: count_grassEat,
+  Animal: count_Animal,
+  Hunter: count_hunter,
+  forestman: count_Forestman,
+
+  Grass: grassArr.length,
+  grassEater: grassEatArr.length,
+  Animal: AnimalArr.length,
+  Hunter: hunterArr.length,
+  _Forestman: ForestmanArr.length,
+};
+
+setInterval(function () {
+  stats["count_grass"] = count_grass;
+  stats["count_grassEat"] = count_grassEat;
+  stats["count_Animal"] = count_Animal;
+  stats["count_hunter"] = count_hunter;
+  stats["count_Forestman"] = count_Forestman;
+
+  stats["count_grass"] = grassArr.length;
+  stats["count_grassEat"] = grassEatArr.length;
+  stats["count_Animal"] = AnimalArr.length;
+  stats["count_hunter"] = hunterArr.length;
+  stats["ForestmanArr"] = ForestmanArr.length;
+  fs.writeFile("stats.json", JSON.stringify(stats), function (err) {
+    if (err) throw err;
+    console.log(stats);
+  });
+}, 10000);

@@ -14,10 +14,11 @@ function fn(data) {
 
 function setup() {
   // frameRate(5);
-  createCanvas(55 * side, 55 * side);
+  createCanvas(50 * side, 50 * side);
   background("#acacac");
 }
 
+var statistics;
 function startgame() {
   function nkarel(matrix) {
     // alert(matrix.length);
@@ -46,24 +47,45 @@ function startgame() {
     }
   }
   socket.on("send matrix", nkarel);
+  if (frameCount % 60 == 0) {
+    statistics = {
+      grassArr: grassArr.length,
+      grassEatArr: grassEatArr.length,
+      AnimalArr: AnimalArr.length,
+      hunterArr: hunterArr.length,
+      ForestmanArr: ForestmanArr.length,
+    };
+    socket.emit("send statistics", statistics);
+  }
 }
 weath = "winter";
 
 function weather() {
   let body = document.getElementById("body");
+  let td = document.getElementById("weather_td");
 
   if (weath == "winter") {
     weath = "spring";
     body.style.backgroundColor = "green";
+    td.style.backgroundColor = "green";
+
+    document.getElementById("weather_td").innerText = "Winter";
   } else if (weath == "spring") {
     weath = "summer";
     body.style.backgroundColor = "yellow";
+    td.style.backgroundColor = "yellow";
+
+    document.getElementById("weather_td").innerText = "spring";
   } else if (weath == "summer") {
     weath = "autumn";
+    document.getElementById("weather_td").innerText = "summer";
+
     body.style.backgroundColor = "orange";
+    td.style.backgroundColor = "orange";
   } else if (weath == "autumn") {
     weath = "winter";
     body.style.backgroundColor = "blue";
+    document.getElementById("weather_td").innerText = "autumn";
   }
 }
 
